@@ -1,0 +1,32 @@
+@model EventoResumen
+@{
+    ViewData["Title"] = "Eliminar evento";
+}
+
+<div class="ev-page-header">
+    <div>
+        <h1>Eliminar evento</h1>
+        <p>El evento dejará de mostrarse en el listado (eliminación lógica).</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="alert alert-danger">¿Seguro que deseas eliminar este evento?</div>
+        <div class="ev-card">
+            <div class="ev-card-body">
+                <dl class="ev-dl mb-4">
+                    <dt>Título</dt><dd>@Model.Titulo</dd>
+                    <dt>Categoría</dt><dd>@Model.Categoria</dd>
+                    <dt>Fecha</dt><dd>@Model.Fecha.ToString("dd/MM/yyyy HH:mm") h</dd>
+                    <dt>Lugar</dt><dd>@Model.Lugar</dd>
+                    <dt>Inscritos confirmados</dt><dd>@Model.Inscritos</dd>
+                </dl>
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                    <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,97 @@
+@model EventoIndexViewModel
+@{
+    ViewData["Title"] = "Eventos";
+}
+
+<div class="ev-page-header">
+    <div>
+        <h1>Eventos</h1>
+        <p>Consulta los eventos activos, sus inscritos y cupos disponibles.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">+ Nuevo evento</a>
+</div>
+
+<div class="ev-card">
+    <form method="get" asp-action="Index" class="ev-card-toolbar">
+        <select name="categoriaId" asp-items="Model.Categorias" class="form-select w-auto" style="min-width: 220px;">
+            <option value="">Todas las categorías</option>
+        </select>
+        <button type="submit" class="btn btn-outline-secondary">Filtrar</button>
+        @if (Model.CategoriaId.HasValue)
+        {
+            <a class="btn btn-link text-decoration-none" asp-action="Index">Quitar filtro</a>
+        }
+        <span class="ms-auto ev-sub">@Model.Eventos.Count evento(s)</span>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table ev-table">
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Fecha</th>
+                    <th>Modalidad</th>
+                    <th class="text-end">Precio</th>
+                    <th>Cupos</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var e in Model.Eventos)
+            {
+                var ocupacion = e.Aforo == 0 ? 0 : (int)Math.Round(e.Inscritos * 100.0 / e.Aforo);
+                var claseBarra = e.Cupos == 0 ? "lleno" : (ocupacion >= 80 ? "casi" : "");
+                <tr>
+                    <td>
+                        <div class="ev-title">@e.Titulo</div>
+                        <div class="ev-sub">@e.Categoria &middot; @e.Lugar</div>
+                    </td>
+                    <td class="text-nowrap">
+                        <div>@e.Fecha.ToString("dd/MM/yyyy")</div>
+                        <div class="ev-sub">@e.Fecha.ToString("HH:mm") h</div>
+                    </td>
+                    <td>
+                        <span class="ev-badge @(e.Modalidad == "Virtual" ? "ev-badge-virtual" : "ev-badge-primary")">@e.Modalidad</span>
+                    </td>
+                    <td class="text-end">
+                        @if (e.Precio == 0)
+                        {
+                            <span class="ev-price gratis">Gratis</span>
+                        }
+                        else
+                        {
+                            <span class="ev-price">S/ @e.Precio.ToString("N2")</span>
+                        }
+                    </td>
+                    <td class="ev-cupos">
+                        @if (e.Cupos == 0)
+                        {
+                            <span class="ev-badge ev-badge-full">Agotado</span>
+                        }
+                        else
+                        {
+                            <div><strong>@e.Cupos</strong> <span class="ev-sub">disponibles</span></div>
+                        }
+                        <div class="progress" role="progressbar" aria-valuenow="@ocupacion" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar @claseBarra" style="width: @ocupacion%"></div>
+                        </div>
+                        <div class="ev-sub">@e.Inscritos de @e.Aforo inscritos</div>
+                    </td>
+                    <td>
+                        <div class="ev-actions">
+                            <a class="ev-link-btn" asp-action="Details" asp-route-id="@e.Id">Detalle</a>
+                            <a class="ev-link-btn" asp-action="Edit" asp-route-id="@e.Id">Editar</a>
+                            <a class="ev-link-btn danger" asp-action="Delete" asp-route-id="@e.Id">Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Eventos.Any())
+    {
+        <div class="ev-empty">No hay eventos para mostrar.</div>
+    }
+</div>

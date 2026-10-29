@@ -1,0 +1,53 @@
+@model IEnumerable<Asistente>
+@{
+    ViewData["Title"] = "Asistentes";
+}
+
+<div class="ev-page-header">
+    <div>
+        <h1>Asistentes</h1>
+        <p>Personas registradas para participar en los eventos.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">+ Nuevo asistente</a>
+</div>
+
+<div class="ev-card">
+    <div class="table-responsive">
+        <table class="table ev-table">
+            <thead>
+                <tr>
+                    <th>Asistente</th>
+                    <th>DNI</th>
+                    <th>Teléfono</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="ev-title">@a.Nombres</div>
+                        <div class="ev-sub">@a.Correo</div>
+                    </td>
+                    <td>@a.Dni</td>
+                    <td>
+                        @if (string.IsNullOrWhiteSpace(a.Telefono))
+                        {
+                            <span class="ev-sub">&mdash;</span>
+                        }
+                        else
+                        {
+                            @a.Telefono
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="ev-empty">No hay asistentes registrados.</div>
+    }
+</div>

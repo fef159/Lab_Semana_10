@@ -1,0 +1,53 @@
+@model Asistente
+@{
+    ViewData["Title"] = "Nuevo asistente";
+}
+
+<div class="ev-page-header">
+    <div>
+        <h1>Nuevo asistente</h1>
+        <p>Registra a una persona para poder inscribirla en eventos.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-7">
+        <div class="ev-card">
+            <div class="ev-card-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label asp-for="Nombres" class="form-label"></label>
+                        <input asp-for="Nombres" class="form-control" />
+                        <span asp-validation-for="Nombres" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Dni" class="form-label">DNI</label>
+                            <input asp-for="Dni" class="form-control" maxlength="8" inputmode="numeric" />
+                            <span asp-validation-for="Dni" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Telefono" class="form-label">Teléfono <span class="ev-sub">(opcional)</span></label>
+                            <input asp-for="Telefono" class="form-control" maxlength="9" inputmode="tel" />
+                            <span asp-validation-for="Telefono" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Correo" class="form-label"></label>
+                        <input asp-for="Correo" class="form-control" />
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex gap-2 mt-2">
+                        <button type="submit" class="btn btn-primary">Guardar asistente</button>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

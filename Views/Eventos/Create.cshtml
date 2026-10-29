@@ -1,0 +1,31 @@
+@model Evento
+@{
+    ViewData["Title"] = "Nuevo evento";
+}
+
+<div class="ev-page-header">
+    <div>
+        <h1>Nuevo evento</h1>
+        <p>Completa los datos para registrar un evento.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="ev-card">
+            <div class="ev-card-body">
+                <form asp-action="Create">
+                    <partial name="_Formulario" model="Model" />
+                    <div class="d-flex gap-2 mt-2">
+                        <button type="submit" class="btn btn-primary">Guardar evento</button>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

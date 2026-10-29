@@ -1,0 +1,62 @@
+@model IEnumerable<Inscripcion>
+@{
+    ViewData["Title"] = "Inscripciones";
+}
+
+<div class="ev-page-header">
+    <div>
+        <h1>Inscripciones</h1>
+        <p>Registro de asistentes inscritos en cada evento.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">+ Nueva inscripción</a>
+</div>
+
+<div class="ev-card">
+    <div class="table-responsive">
+        <table class="table ev-table">
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Asistente</th>
+                    <th>Fecha de inscripción</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var i in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="ev-title">@i.Evento?.Titulo</div>
+                        <div class="ev-sub">@i.Evento?.Fecha.ToString("dd/MM/yyyy HH:mm")</div>
+                    </td>
+                    <td>
+                        <div>@i.Asistente?.Nombres</div>
+                        <div class="ev-sub">DNI @i.Asistente?.Dni</div>
+                    </td>
+                    <td class="text-nowrap">@i.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        <span class="ev-badge @(i.Estado == Inscripcion.Confirmada ? "ev-badge-ok" : "ev-badge-off")">@i.Estado</span>
+                    </td>
+                    <td>
+                        <div class="ev-actions">
+                            @if (i.Estado == Inscripcion.Confirmada)
+                            {
+                                <form asp-action="Cancelar" asp-route-id="@i.Id" method="post">
+                                    <button type="submit" class="ev-link-btn danger">Cancelar</button>
+                                </form>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="ev-empty">No hay inscripciones registradas.</div>
+    }
+</div>
